@@ -135,20 +135,25 @@
       e.preventDefault();
       const formData = new FormData(form);
 
-      fetch('https://script.google.com/macros/s/AKfycbwzxF3i6y_tmLFRYFmuNfMy-1VMak-3G1vMZXicuUD3GcYmtVNAFB-k9_r9BFv6MQh_Rg/exec', {
+      fetch('https://script.google.com/macros/s/AKfycb.../exec', {
         method: 'POST',
         body: formData
       })
-      .then(response => response.text())
-      .statusMsg.textContent = "✅ Submitted successfully!";
-      statusMsg.className = "success";
-      statusMsg.style.display = "block";
-      form.reset();
+      .then(response => response.json())  // ✅ expecting JSON back
+      .then(data => {
+        if (data.status === "success") {
+          statusMsg.textContent = "✅ Submitted successfully!";
+          statusMsg.style.color = "green";
+          form.reset();
+        } else {
+          throw new Error("Response did not indicate success.");
+        }
       })
       .catch(error => {
         statusMsg.textContent = "❌ Error submitting form. Check console.";
         statusMsg.style.color = "red";
         console.error("Form submission error:", error);
+      });
       });
     
   </script>
