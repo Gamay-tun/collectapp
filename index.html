@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SAC MWS Youth Futsal and Volleyball</title>  
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+  
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(to right, #e0eafc, #cfdef3);
+        padding: 20px;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+  
+      .container {
+        background-color: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        max-width: 420px;
+        width: 100%;
+        animation: fadeIn 0.5s ease-in-out;
+      }
+  
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+  
+      h2 {
+        text-align: center;
+        margin-bottom: 25px;
+        font-size: 24px;
+        color: #333;
+      }
+  
+      input, select, button {
+        width: 100%;
+        padding: 14px;
+        margin-top: 10px;
+        margin-bottom: 16px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 16px;
+        transition: border 0.2s, box-shadow 0.2s;
+      }
+  
+      input:focus, select:focus {
+        border-color: #4CAF50;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.15);
+      }
+  
+      button {
+        background-color: #4CAF50;
+        color: white;
+        font-weight: bold;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+  
+      button:hover {
+        background-color: #45a049;
+      }
+  
+      #statusMsg {
+        text-align: center;
+        font-weight: bold;
+        margin-top: 20px;
+        padding: 12px;
+        border-radius: 6px;
+        display: none;
+      }
+  
+      #statusMsg.success {
+        background-color: #e7f9ed;
+        color: #2e7d32;
+        border: 1px solid #b2dfdb;
+      }
+  
+      #statusMsg.error {
+        background-color: #ffebee;
+        color: #c62828;
+        border: 1px solid #ef9a9a;
+      }
+    </style>
+  </head>
+  <body>
+  
+    <div class="container">
+      <h2>SAC MWS Youth Futsal and Volleyball</h2>
+      <form id="teamForm">
+        <input type="text" name="name" placeholder="Name" required />
+        <input type="tel" name="phone" placeholder="WhatsApp Phone Number" required />
+        <select name="shoe_size" required>
+          <option value="" disabled selected>Select Shoe Size</option>
+        </select>
+        <select name="shirt_size" required>
+          <option value="" disabled selected>Select Shirt Size</option>
+          <option value="XS">XS</option>
+          <option value="S">S</option>
+          <option value="M">M</option>
+          <option value="L">L</option>
+          <option value="XL">XL</option>
+          <option value="XXL">XXL</option>
+        </select>
+        <button type="submit">Submit</button>
+      </form>
+      <p id="statusMsg"></p>
+    </div>
+
+  <script>
+    // Populate shoe size dropdown (20–47)
+    const shoeSelect = document.querySelector('select[name="shoe_size"]');
+    for (let i = 20; i <= 47; i++) {
+      const opt = document.createElement("option");
+      opt.value = i;
+      opt.textContent = i;
+      shoeSelect.appendChild(opt);
+    }
+
+    const form = document.getElementById('teamForm');
+    const statusMsg = document.getElementById('statusMsg');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const formData = new FormData(form);
+
+      fetch('https://script.google.com/macros/s/AKfycbwzxF3i6y_tmLFRYFmuNfMy-1VMak-3G1vMZXicuUD3GcYmtVNAFB-k9_r9BFv6MQh_Rg/exec', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.text())
+      .statusMsg.textContent = "✅ Submitted successfully!";
+      statusMsg.className = "success";
+      statusMsg.style.display = "block";
+      form.reset();
+      })
+      .catch(error => {
+        statusMsg.textContent = "❌ Error submitting form. Check console.";
+        statusMsg.style.color = "red";
+        console.error("Form submission error:", error);
+      });
+    });
+  </script>
+
+</body>
+</html>
