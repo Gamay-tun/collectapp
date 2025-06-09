@@ -118,45 +118,48 @@
       <p id="statusMsg"></p>
     </div>
 
-  <script>
-    // Populate shoe size dropdown (20–47)
-    const shoeSelect = document.querySelector('select[name="shoe_size"]');
-    for (let i = 27; i <= 47; i++) {
-      const opt = document.createElement("option");
-      opt.value = i;
-      opt.textContent = i;
-      shoeSelect.appendChild(opt);
-    }
-
-    const form = document.getElementById('teamForm');
-    const statusMsg = document.getElementById('statusMsg');
-
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const formData = new FormData(form);
-
-      fetch('https://script.google.com/macros/s/AKfycb.../exec', {
-        method: 'POST',
-        body: formData
-      })
-      .then(response => response.json())  // ✅ expecting JSON back
-      .then(data => {
-        if (data.status === "success") {
-          statusMsg.textContent = "✅ Submitted successfully!";
-          statusMsg.style.color = "green";
-          form.reset();
-        } else {
-          throw new Error("Response did not indicate success.");
+    <script>
+      // Run only after DOM is loaded
+      document.addEventListener("DOMContentLoaded", function () {
+        // Populate shoe size dropdown (27–47)
+        const shoeSelect = document.querySelector('select[name="shoe_size"]');
+        for (let i = 27; i <= 47; i++) {
+          const opt = document.createElement("option");
+          opt.value = i;
+          opt.textContent = i;
+          shoeSelect.appendChild(opt);
         }
-      })
-      .catch(error => {
-        statusMsg.textContent = "❌ Error submitting form. Check console.";
-        statusMsg.style.color = "red";
-        console.error("Form submission error:", error);
-      });
-      });
     
-  </script>
+        const form = document.getElementById('teamForm');
+        const statusMsg = document.getElementById('statusMsg');
+    
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          const formData = new FormData(form);
+    
+          fetch('https://script.google.com/macros/s/AKfycb.../exec', {
+            method: 'POST',
+            body: formData
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.status === "success") {
+              statusMsg.textContent = "✅ Submitted successfully!";
+              statusMsg.style.color = "green";
+              form.reset();
+            } else {
+              throw new Error("Response did not indicate success.");
+            }
+          })
+          .catch(error => {
+            statusMsg.textContent = "❌ Error submitting form. Check console.";
+            statusMsg.style.color = "red";
+            console.error("Form submission error:", error);
+          });
+        });
+      });
+    </script>
+    
 
 </body>
 </html>
